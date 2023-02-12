@@ -85,22 +85,22 @@ const groups = [
 ];
 
 const Tuner = () => {
-  const [context, setContext] = useState(null);
-  const [oscillator, setOscillator] = useState(null);
-  const [selectedNote, setSelectedNote] = useState(null);
-  const [selectedGroup, setSelectedGroup] = useState(0);
-  const [displayNote,setdisplayNote]=useState(null);
+  const [context, setContext] = useState(null); //audiocontext from webaudio api
+  const [oscillator, setOscillator] = useState(null); //osicalltor node from web audio api
+  const [selectedNote, setSelectedNote] = useState(null); //set selected note
+  const [selectedGroup, setSelectedGroup] = useState(0); //set selected group of notes
+  const [displayNote,setdisplayNote]=useState(null); //display current note
   useEffect(() => {
-    setContext(new (window.AudioContext || window.webkitAudioContext)());
+    setContext(new (window.AudioContext || window.webkitAudioContext)()); //initiailize context
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { //create new osicillator. connect to context destination. if context and note defined set freq. 
     if (context && selectedNote) {
       if (oscillator) {
         oscillator.stop();
       }
 
-      const newOscillator = context.createOscillator();
+      const newOscillator = context.createOscillator(); //create oscillator node
       newOscillator.frequency.value = selectedNote.freq;
       newOscillator.connect(context.destination);
       newOscillator.start();
@@ -109,16 +109,16 @@ const Tuner = () => {
     }
   }, [context, selectedNote]);
   
-  const handleNoteSelection = (note) => {
+  const handleNoteSelection = (note) => { //set note on change
     setSelectedNote(note);
     setdisplayNote(note.displayName)
   };
 
   
-  const handleGroupSelection = (event) => {
+  const handleGroupSelection = (event) => { //select group
     setSelectedGroup(event.target.value);
   };
-  const stop =()=>{
+  const stop =()=>{ //stop if true
     if(oscillator){
       setOscillator();
       oscillator.stop();
@@ -130,7 +130,7 @@ const Tuner = () => {
 
       <div className="text-center text-4xl font-bold">Guitar Tuner for Capo Positions</div>
       <select onChange={handleGroupSelection} className="border border-gray-400 rounded p-2">
-        {groups.map((group, index) => (
+        {groups.map((group, index) => ( //map out groups in dropdown
           <option key={group.name} value={index}>
             {group.name}
           </option>
@@ -139,7 +139,7 @@ const Tuner = () => {
       <div className="mt-6">
         
         <ul>
-          {groups[selectedGroup].notes.map((note, index) => (
+          {groups[selectedGroup].notes.map((note, index) => ( //map out notes
             <li key={note.name}>
               <button onClick={() => handleNoteSelection(note)} className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 position-relative relative" style={{ width: `50px` }}>
                 {note.displayName}
