@@ -1,7 +1,7 @@
 {
   "name": "guitartunerv2",
-  "version": "0.1.0",
   "homepage": "https://larrysl2.github.io/GuitarTunerWithCapo/",
+  "version": "0.1.0",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
